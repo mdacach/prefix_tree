@@ -1,5 +1,9 @@
 #pragma once
 
+#include <algorithm>
+#include <string>
+#include <vector>
+
 class PrefixTree
 {
 private:
@@ -25,4 +29,13 @@ public:
     auto Empty() const -> bool { return true; }
 
     auto Size() const -> std::size_t { return size; }
+
+    auto Erase(std::string word) -> void
+    {
+        if (!this->Contains(word))
+            throw std::runtime_error("Erasing string not present in Trie");
+
+        words.erase(std::remove(std::begin(words), std::end(words), word), std::end(words));
+        --size;
+    }
 };

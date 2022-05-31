@@ -61,11 +61,50 @@ SCENARIO("Size is kept updated")
                 }
             }
 
-            WHEN("We add the same string again") {
+            WHEN("We add the same string again")
+            {
                 tree.Insert("apple"s);
-                THEN("Size does not change") {
+                THEN("Size does not change")
+                {
                     REQUIRE(tree.Size() == 1);
                 }
+            }
+
+            WHEN("We remove a string")
+            {
+                tree.Erase("apple"s);
+                THEN("Size decreases by one")
+                {
+                    REQUIRE(tree.Size() == 0);
+                }
+            }
+        }
+    }
+}
+
+SCENARIO("Strings can be removed from Trie")
+{
+    GIVEN("A Trie with some strings inserted")
+    {
+        auto tree = PrefixTree{};
+        tree.Insert("apple"s);
+        tree.Insert("banana"s);
+        tree.Insert("tomato"s);
+
+        WHEN("We remove a string")
+        {
+            tree.Erase("banana"s);
+            THEN("Trie does not contain such string anymore")
+            {
+                REQUIRE(tree.Contains("banana"s) == false);
+            }
+        }
+
+        WHEN("We remove a string which is not there")
+        {
+            THEN("An exception is thrown")
+            {
+                REQUIRE_THROWS(tree.Erase("table"s));
             }
         }
     }
