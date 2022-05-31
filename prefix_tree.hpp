@@ -5,16 +5,17 @@
 #include <string>
 #include <vector>
 
+template <typename NodeInfo>
 class PrefixTree
 {
 private:
-    std::map<std::string, int> words{};
+    std::map<std::string, NodeInfo> words{};
     std::size_t size{};
 
 public:
     PrefixTree() = default;
 
-    auto Insert(std::string word, int info) -> void
+    auto Insert(std::string word, NodeInfo info) -> void
     {
         if (this->Contains(word))
             return;
@@ -22,7 +23,7 @@ public:
         words[word] = info;
     }
 
-    auto Get(std::string query) const -> int { return words.at(query); }
+    auto Get(std::string query) const -> NodeInfo { return words.at(query); }
 
     auto Contains(std::string query) -> bool
     {
