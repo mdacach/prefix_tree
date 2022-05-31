@@ -5,17 +5,18 @@
 #include <string>
 #include <vector>
 
-template <typename NodeInfo>
+template <typename EdgeType, typename NodeInfo>
 class PrefixTree
 {
 private:
-    std::map<std::string, NodeInfo> words{};
+    using Sequence = std::vector<EdgeType>;
+    std::map<Sequence, NodeInfo> words{};
     std::size_t size{};
 
 public:
     PrefixTree() = default;
 
-    auto Insert(std::string word, NodeInfo info) -> void
+    auto Insert(Sequence word, NodeInfo info) -> void
     {
         if (this->Contains(word))
             return;
@@ -23,9 +24,9 @@ public:
         words[word] = info;
     }
 
-    auto Get(std::string query) const -> NodeInfo { return words.at(query); }
+    auto Get(Sequence query) const -> NodeInfo { return words.at(query); }
 
-    auto Contains(std::string query) -> bool
+    auto Contains(Sequence query) -> bool
     {
         const auto itr = words.find(query);
         return itr != std::end(words);
@@ -35,7 +36,7 @@ public:
 
     auto Size() const -> std::size_t { return size; }
 
-    auto Erase(std::string word) -> void
+    auto Erase(Sequence word) -> void
     {
         if (!this->Contains(word))
             throw std::runtime_error("Erasing string not present in Trie");
