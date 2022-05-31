@@ -9,7 +9,13 @@ private:
 public:
     PrefixTree() = default;
 
-    auto Insert(std::string word) -> void { ++size; words.push_back(word); }
+    auto Insert(std::string word) -> void
+    {
+        if (this->Contains(word))
+            return;
+        ++size;
+        words.push_back(word);
+    }
 
     auto Contains(std::string query) -> bool
     {

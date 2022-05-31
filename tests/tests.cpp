@@ -60,6 +60,13 @@ SCENARIO("Size is kept updated")
                     REQUIRE(tree.Size() == 2);
                 }
             }
+
+            WHEN("We add the same string again") {
+                tree.Insert("apple"s);
+                THEN("Size does not change") {
+                    REQUIRE(tree.Size() == 1);
+                }
+            }
         }
     }
 }
