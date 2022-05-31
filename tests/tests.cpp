@@ -20,7 +20,7 @@ SCENARIO("Strings can be inserted into Trie")
 
         WHEN("We insert a string")
         {
-            tree.Insert("apple"s);
+            tree.Insert("apple"s, 0);
 
             THEN("Trie now contains such string")
             {
@@ -46,7 +46,7 @@ SCENARIO("Size is kept updated")
 
         WHEN("We add a string")
         {
-            tree.Insert("apple"s);
+            tree.Insert("apple"s, 0);
             THEN("Size increases by one")
             {
                 REQUIRE(tree.Size() == 1);
@@ -59,7 +59,7 @@ SCENARIO("Size is kept updated")
 
             WHEN("We add a second string")
             {
-                tree.Insert("banana"s);
+                tree.Insert("banana"s, 0);
                 THEN("Size increases by one again")
                 {
                     REQUIRE(tree.Size() == 2);
@@ -68,7 +68,7 @@ SCENARIO("Size is kept updated")
 
             WHEN("We add the same string again")
             {
-                tree.Insert("apple"s);
+                tree.Insert("apple"s, 0);
                 THEN("Size does not change")
                 {
                     REQUIRE(tree.Size() == 1);
@@ -92,9 +92,9 @@ SCENARIO("Strings can be removed from Trie")
     GIVEN("A Trie with some strings inserted")
     {
         auto tree = PrefixTree{};
-        tree.Insert("apple"s);
-        tree.Insert("banana"s);
-        tree.Insert("tomato"s);
+        tree.Insert("apple"s, 0);
+        tree.Insert("banana"s, 0);
+        tree.Insert("tomato"s, 0);
 
         WHEN("We remove a string")
         {
@@ -110,6 +110,22 @@ SCENARIO("Strings can be removed from Trie")
             THEN("An exception is thrown")
             {
                 REQUIRE_THROWS(tree.Erase("table"s));
+            }
+        }
+    }
+}
+
+SCENARIO("Trie stores information in each node")
+{
+    GIVEN("A trie with some strings and information")
+    {
+        auto tree = PrefixTree{};
+        tree.Insert("apple"s, 10);
+        WHEN("You query a string")
+        {
+            THEN("You have access to the information of that node")
+            {
+                REQUIRE(tree.Get("apple"s) == 10);
             }
         }
     }

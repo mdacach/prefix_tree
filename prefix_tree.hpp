@@ -1,29 +1,33 @@
 #pragma once
 
 #include <algorithm>
+#include <map>
 #include <string>
 #include <vector>
 
 class PrefixTree
 {
 private:
-    std::vector<std::string> words{};
+    std::map<std::string, int> words{};
     std::size_t size{};
 
 public:
     PrefixTree() = default;
 
-    auto Insert(std::string word) -> void
+    auto Insert(std::string word, int info) -> void
     {
         if (this->Contains(word))
             return;
         ++size;
-        words.push_back(word);
+        words[word] = info;
     }
+
+    auto Get(std::string query) const -> int { return words.at(query); }
 
     auto Contains(std::string query) -> bool
     {
-        return std::find(std::begin(words), std::end(words), query) != std::end(words);
+        const auto itr = words.find(query);
+        return itr != std::end(words);
     }
 
     auto Empty() const -> bool { return size == 0; }
@@ -35,7 +39,7 @@ public:
         if (!this->Contains(word))
             throw std::runtime_error("Erasing string not present in Trie");
 
-        words.erase(std::remove(std::begin(words), std::end(words), word), std::end(words));
+        words.erase(word);
         --size;
     }
 };
