@@ -5,7 +5,7 @@ Prefix tree implementation in Modern C++17.
 Tool usage based on:
 
 * [Jason Turner's setup](https://github.com/cpp-best-practices/cmake_conan_boilerplate_template)
-* [Euripede's ctdsp setup](https://github.com/euripedesrocha/ctdsp)
+* [Euripedes' ctdsp setup](https://github.com/euripedesrocha/ctdsp)
 
 Tags:
 
