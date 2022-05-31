@@ -4,11 +4,12 @@ class PrefixTree
 {
 private:
     std::vector<std::string> words{};
+    std::size_t size{};
 
 public:
     PrefixTree() = default;
 
-    auto Insert(std::string word) -> void { words.push_back(word); }
+    auto Insert(std::string word) -> void { ++size; words.push_back(word); }
 
     auto Contains(std::string query) -> bool
     {
@@ -16,6 +17,6 @@ public:
     }
 
     auto Empty() const -> bool { return true; }
-  
-    auto Size() const -> std::size_t { return 0; }
+
+    auto Size() const -> std::size_t { return size; }
 };

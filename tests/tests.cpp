@@ -37,3 +37,29 @@ SCENARIO("Strings can be inserted into Trie")
         }
     }
 }
+
+SCENARIO("Size is kept updated")
+{
+    GIVEN("A default-constructed Trie")
+    {
+        auto tree = PrefixTree{};
+
+        WHEN("We add a string")
+        {
+            tree.Insert("apple"s);
+            THEN("Size increases by one")
+            {
+                REQUIRE(tree.Size() == 1);
+            }
+
+            WHEN("We add a second string")
+            {
+                tree.Insert("banana"s);
+                THEN("Size increases by one again")
+                {
+                    REQUIRE(tree.Size() == 2);
+                }
+            }
+        }
+    }
+}
