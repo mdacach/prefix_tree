@@ -52,6 +52,11 @@ SCENARIO("Size is kept updated")
                 REQUIRE(tree.Size() == 1);
             }
 
+            THEN("Trie is not empty anymore")
+            {
+                REQUIRE(tree.Empty() == false);
+            }
+
             WHEN("We add a second string")
             {
                 tree.Insert("banana"s);

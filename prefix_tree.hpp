@@ -26,7 +26,7 @@ public:
         return std::find(std::begin(words), std::end(words), query) != std::end(words);
     }
 
-    auto Empty() const -> bool { return true; }
+    auto Empty() const -> bool { return size == 0; }
 
     auto Size() const -> std::size_t { return size; }
 
