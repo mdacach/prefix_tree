@@ -2,3 +2,7 @@
 cmake-*
 .idea/
 
+# Doxygen stuff
+html/
+latex/
+

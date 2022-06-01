@@ -14,6 +14,8 @@
  * can be generalized for queries about "sequences" of values (String is a sequence of chars). \n
  * Refer to: https://en.wikipedia.org/wiki/Trie \n
  * \n
+ * \warning
+ * `EdgeType` must be valid as a std::map key.
  * @tparam EdgeType Value represented in an edge. In the case of a string application, this value would
  * be a "char", and we would query on "vector of chars". `EdgeType` MUST be valid as a std::map key.
  * @tparam NodeInfo Information to be stored in nodes. Can be any type, include custom structures.
