@@ -231,3 +231,44 @@ SCENARIO("Insertion creates non-terminal nodes")
         }
     }
 }
+
+SCENARIO("Erasing same key multiple times throws error")
+{
+    GIVEN("A Trie with some values")
+    {
+        auto tree = PrefixTree<char, int>{};
+        tree.Insert("apple"_vc, 5);
+        tree.Insert("banana"_vc, 10);
+        WHEN("We remove the same key multiple times")
+        {
+            THEN("Second erase throws an error")
+            {
+                tree.Erase("banana"_vc);
+                REQUIRE_THROWS(tree.Erase("banana"_vc));
+            }
+        }
+    }
+}
+
+SCENARIO("We can insert a key which was previously erased")
+{
+    GIVEN("A Trie with some values")
+    {
+        auto tree = PrefixTree<char, int>{};
+        tree.Insert("apple"_vc, 5);
+        tree.Insert("banana"_vc, 10);
+        WHEN("We have removed one of the keys")
+        {
+            tree.Erase("banana"_vc);
+            THEN("We can insert it again")
+            {
+                tree.Insert("banana"_vc, 5);
+                REQUIRE(tree.Contains("banana"_vc));
+                AND_THEN("The new value is present in the Trie")
+                {
+                    REQUIRE(tree.Get("banana"_vc).value() == 5);
+                }
+            }
+        }
+    }
+}
