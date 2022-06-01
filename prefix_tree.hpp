@@ -18,18 +18,17 @@ private:
         Edges m_next{};                   // Possible paths from this node
         std::optional<NodeInfo> m_info{}; // Information associated with this node
     };
-    using Sequence = std::vector<EdgeType>;
-    std::map<Sequence, NodeInfo> words{};
+    using Key = std::vector<EdgeType>;
 
 public:
     PrefixTree() : m_root{ std::make_shared<Node>() } {};
 
-    auto Insert(Sequence sequence, NodeInfo info) -> void
+    auto Insert(Key key, NodeInfo info) -> void
     {
-        const auto already_exists = Contains(sequence);
+        const auto already_exists = Contains(key);
 
         auto current = m_root;
-        for (const auto& edge_value : sequence)
+        for (const auto& edge_value : key)
         {
             bool exists = current->m_next.count(edge_value) > 0;
             if (!exists)
@@ -51,10 +50,10 @@ public:
             ++m_size;
     }
 
-    auto Get(Sequence query) const -> std::optional<NodeInfo>
+    auto Get(Key key) const -> std::optional<NodeInfo>
     {
         auto current = m_root;
-        for (const auto& edge_value : query)
+        for (const auto& edge_value : key)
         {
             bool exists = current->m_next.count(edge_value) > 0;
             if (!exists)
@@ -64,18 +63,18 @@ public:
         return current->m_info;
     }
 
-    auto Contains(Sequence query) -> bool { return Get(query).has_value(); }
+    auto Contains(Key key) -> bool { return Get(key).has_value(); }
 
     auto Empty() const -> bool { return m_size == 0; }
 
     auto Size() const -> std::size_t { return m_size; }
 
-    auto Erase(Sequence sequence) -> void
+    auto Erase(Key key) -> void
     {
-        if (!Contains(sequence))
+        if (!Contains(key))
             throw std::runtime_error("Erasing key not present in Trie");
 
-        auto node = GetNode_(sequence);
+        auto node = GetNode_(key);
         auto& info = node->m_info;
         if (info)
             --m_size;
@@ -88,13 +87,13 @@ private:
      * \n
      * To be used internally only. \n
      * REQUIRES: That the node exists.
-     * @param sequence Sequence corresponding to node.
+     * @param sequence Key corresponding to node.
      * @return Pointer to corresponding node.
      */
-    auto GetNode_(Sequence query) -> std::shared_ptr<Node>
+    auto GetNode_(Key key) -> std::shared_ptr<Node>
     {
         auto current = m_root;
-        for (const auto& edge_value : query)
+        for (const auto& edge_value : key)
             current = current->m_next.at(edge_value);
         return current;
     }
