@@ -213,3 +213,21 @@ SCENARIO("We can parameterize on the edges")
         }
     }
 }
+
+SCENARIO("Insertion creates non-terminal nodes")
+{
+    GIVEN("An empty Trie")
+    {
+        auto tree = PrefixTree<char, int>{};
+        WHEN("We insert a big word")
+        {
+            tree.Insert("banana"_vc, 10);
+            THEN("We also create the intermediate non-terminal nodes")
+            {
+                REQUIRE(tree.Contains("b"_vc));
+                REQUIRE(tree.Contains("ba"_vc));
+                REQUIRE(tree.Contains("banan"_vc));
+            }
+        }
+    }
+}
