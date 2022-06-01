@@ -23,7 +23,7 @@ private:
 public:
     PrefixTree() : m_root{ std::make_shared<Node>() } {};
 
-    auto Insert(Key key, NodeInfo info) -> void
+    auto Insert(const Key& key, NodeInfo info) -> void
     {
         const auto already_exists = Contains(key);
 
@@ -50,7 +50,7 @@ public:
             ++m_size;
     }
 
-    auto Get(Key key) const -> std::optional<NodeInfo>
+    auto Get(const Key& key) const -> std::optional<NodeInfo>
     {
         auto current = m_root;
         for (const auto& edge_value : key)
@@ -63,13 +63,13 @@ public:
         return current->m_info;
     }
 
-    auto Contains(Key key) -> bool { return Get(key).has_value(); }
+    auto Contains(const Key& key) const -> bool { return Get(key).has_value(); }
 
     auto Empty() const -> bool { return m_size == 0; }
 
     auto Size() const -> std::size_t { return m_size; }
 
-    auto Erase(Key key) -> void
+    auto Erase(const Key& key) -> void
     {
         if (!Contains(key))
             throw std::runtime_error("Erasing key not present in Trie");
@@ -90,7 +90,7 @@ private:
      * @param sequence Key corresponding to node.
      * @return Pointer to corresponding node.
      */
-    auto GetNode_(Key key) -> std::shared_ptr<Node>
+    auto GetNode_(const Key& key) -> std::shared_ptr<Node>
     {
         auto current = m_root;
         for (const auto& edge_value : key)
