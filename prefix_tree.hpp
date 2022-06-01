@@ -42,10 +42,9 @@ public:
             {
                 current = current->m_next.at(edge_value);
             }
-
-            current->m_info = info;
         }
 
+        current->m_info = std::move(info);
         if (!already_exists)
             ++m_size;
     }
@@ -97,9 +96,6 @@ private:
             current = current->m_next.at(edge_value);
         return current;
     }
-
-public:
-    NodeInfo m_null_info{};
 
 private:
     std::shared_ptr<Node> m_root{};
