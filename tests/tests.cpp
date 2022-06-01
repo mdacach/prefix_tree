@@ -190,7 +190,7 @@ SCENARIO("We can parameterize the information stored in each node")
             custom_tree.Insert(string, my_data);
             THEN("We can get the pair out of it")
             {
-                REQUIRE(custom_tree.Get(string) == my_data);
+                REQUIRE(custom_tree.Get(string).value() == my_data);
             }
         }
     }
@@ -209,24 +209,6 @@ SCENARIO("We can parameterize on the edges")
             THEN("It creates a node")
             {
                 REQUIRE(tree.Contains({ 1, 2, 3, 4 }));
-            }
-        }
-    }
-}
-
-SCENARIO("Insertion creates non-terminal nodes")
-{
-    GIVEN("An empty Trie")
-    {
-        auto tree = PrefixTree<char, int>{};
-        WHEN("We insert a big word")
-        {
-            tree.Insert("banana"_vc, 10);
-            THEN("We also create the intermediate non-terminal nodes")
-            {
-                REQUIRE(tree.Contains("b"_vc));
-                REQUIRE(tree.Contains("ba"_vc));
-                REQUIRE(tree.Contains("banan"_vc));
             }
         }
     }
