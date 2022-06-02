@@ -57,6 +57,6 @@ if (ENABLE_SANITIZERS)
 endif ()
 
 add_executable(${PROJECT_NAME}
-        main.cpp)
+        usage_example.cpp)
 
 add_subdirectory(tests)
