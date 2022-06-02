@@ -254,3 +254,22 @@ SCENARIO("We can insert a key which was previously erased")
         }
     }
 }
+
+SCENARIO("Size gets updated when inserting into previously erased node")
+{
+    GIVEN("A trie with an erased node")
+    {
+        auto tree = PrefixTree<char, int>{};
+        tree.Insert("apple"_vc, 5);
+        tree.Erase("apple"_vc);
+        REQUIRE(tree.Empty());
+        WHEN("We insert the node again")
+        {
+            tree.Insert("apple"_vc, 10);
+            THEN("The size gets updated")
+            {
+                REQUIRE(tree.Size() == 1);
+            }
+        }
+    }
+}
