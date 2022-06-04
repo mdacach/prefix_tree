@@ -3,9 +3,10 @@
 #include <algorithm>
 #include <map>
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
+
+#include "tl_optional.hpp"
 
 /**
  * Prefix Tree (Trie) structure. \n
@@ -38,8 +39,8 @@ private:
         using Edges = std::map<EdgeType, std::shared_ptr<Node>>;
 
     public:
-        Edges m_next{};                   // Possible paths from this node
-        std::optional<NodeInfo> m_info{}; // Information associated with this node
+        Edges m_next{};                  // Possible paths from this node
+        tl::optional<NodeInfo> m_info{}; // Information associated with this node
     };
     using Key = std::vector<EdgeType>;
 
@@ -82,24 +83,28 @@ public:
     }
 
     /**
-     * Returns the information associated with such a key as an std::optional. \n
+     * Returns the information associated with such a key as an tl::optional. \n
      * \n
-     * If the key does not exist, returns std::nullopt. \n
+     * If the key does not exist, returns tl::nullopt. \n
      * @param key Key associated with the node.
-     * @return Optional with NodeInfo if exists, std::nullopt if it does not.
+     * @return Optional with NodeInfo if exists, tl::nullopt if it does not.
      */
-    auto Get(const Key& key) const -> std::optional<NodeInfo>
+    auto Get(const Key& key) const -> tl::optional<const NodeInfo&>
     {
-        // TODO: use optional to reference to avoid info copying (Sy Brand's probably)
         auto current = m_root;
         for (const auto& edge_value : key)
         {
             bool exists = current->m_next.count(edge_value) > 0;
             if (!exists)
-                return std::nullopt;
+                return tl::nullopt;
             current = current->m_next.at(edge_value);
         }
-        return current->m_info;
+
+        // We need to return the value for it to be taken as const &
+        if (current->m_info.has_value())
+            return current->m_info.value();
+        else
+            return tl::nullopt;
     }
 
     /**
@@ -125,12 +130,11 @@ public:
      * Erases a node from a Trie. \n
      * \n
      * Specifically, it erases the *information* associated with such a node. \n
-     * After erasing x, Get(x) returns std::nullopt and Contains(x) returns false.
+     * After erasing x, Get(x) returns tl::nullopt and Contains(x) returns false.
      * @param key Node to erase.
      */
     auto Erase(const Key& key) -> void
     {
-        // TODO: test if size is updating correctly when we insert into erased position.
         if (!Contains(key))
             throw std::runtime_error("Erasing key not present in Trie");
 
@@ -138,7 +142,7 @@ public:
         auto& info = node->m_info;
         if (info)
             --m_size;
-        info = std::nullopt;
+        info = tl::nullopt;
     }
 
 private:
