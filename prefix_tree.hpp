@@ -57,9 +57,6 @@ public:
      */
     auto Insert(const Key& key, NodeInfo info) -> void
     {
-        // TODO: optimize this to remove the extra call
-        const auto already_exists = Contains(key);
-
         auto current = m_root;
         for (const auto& edge_value : key)
         {
@@ -77,8 +74,9 @@ public:
             }
         }
 
+        bool already_existed = current->m_info.has_value();
         current->m_info = std::move(info);
-        if (!already_exists)
+        if (!already_existed)
             ++m_size;
     }
 
